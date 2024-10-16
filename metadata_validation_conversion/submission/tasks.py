@@ -22,7 +22,7 @@ from .AnnotateTemplate import AnnotateTemplate
 from .helpers import get_credentials
 from celery import Task
 from django.conf import settings
-# from deepdiff import DeepDiff
+from deepdiff import DeepDiff
 from django.core import mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -471,11 +471,11 @@ def save_submission_data(root, submission_type, room_id, action):
                     study_obj['subscribers'] = existing_doc['subscribers']
 
                     # email subscribers
-                    # deepdiff_obj = DeepDiff(existing_doc, study_obj)
-                    # if deepdiff_obj:
-                    #     subscriber_emails = [ele['email'] for ele in existing_doc['subscribers']]
-                    #     for email in subscriber_emails:
-                    #         send_user_email(study_obj['study_id'], email)
+                    deepdiff_obj = DeepDiff(existing_doc, study_obj)
+                    if deepdiff_obj:
+                        subscriber_emails = [ele['email'] for ele in existing_doc['subscribers']]
+                        for email in subscriber_emails:
+                            send_user_email(study_obj['study_id'], email)
 
             es.index(index='submissions', id=study_obj['study_id'], body=study_obj)
 

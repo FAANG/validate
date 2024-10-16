@@ -166,6 +166,9 @@ def validate_ontology(request, room_id):
         if len(res['hits']['hits']) == 0:
             es.index(index='ontologies', id=new_ontology['key'], body=new_ontology)
 
+    # task = update_ontology_summary.s().set(queue='submission')
+    # task_chain = chain(task)
+    # task_chain.apply_async()
     return HttpResponse(status=200)
 
 
